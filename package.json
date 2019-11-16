@@ -1,17 +1,17 @@
 {
   "name": "react-inject-context",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "files": [
-    "dist"
+    "dist/src"
   ],
-  "author": "Ori Marron <orim@wix.com>",
+  "author": "Ori Marron <ori.marron@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/OriMarron/react-inject-context"
   },
   "license": "MIT",
   "engines": {
@@ -31,7 +31,9 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "prepush": "npm run test:prod && npm run build",
+    "commitmsg": "commitlint -E HUSKY_GIT_PARAMS"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -48,7 +50,7 @@
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
@@ -68,7 +70,7 @@
       }
     },
     "collectCoverageFrom": [
-      "src/*.{js,ts}"
+      "src/*.{js,ts,tsx}"
     ]
   },
   "prettier": {
@@ -83,8 +85,10 @@
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
+    "@testing-library/react": "^9.3.2",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.11.0",
+    "@types/react": "^16.8.0",
     "colors": "^1.3.2",
     "commitizen": "^3.0.0",
     "coveralls": "^3.0.2",
@@ -97,6 +101,8 @@
     "lodash.camelcase": "^4.3.0",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
     "semantic-release": "^15.9.16",
@@ -109,5 +115,8 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
   }
 }
