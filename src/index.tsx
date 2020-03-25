@@ -1,22 +1,32 @@
 import * as React from 'react'
 
-export type InjectableCotext<T> = React.Context<T> & {
-  InjectableProvider: React.FC<React.ProviderProps<T>>
-}
+export type InjectableCotext<T> = React.Context<T>
 
-const NOTHING = {}
+export function createInjectableContext<T>(defaultValue: T): InjectableCotext<T> {
+  const Context = React.createContext<T>(defaultValue)
+  const HasParentProvider = React.createContext<boolean>(false)
 
-export function createInjectableContext<T>(): InjectableCotext<T> {
-  const Context = React.createContext<T>(NOTHING as any) as InjectableCotext<T>
-  
-  Context.InjectableProvider = ({ value, children }) => {
+  const OriginalProvider = Context.Provider
+
+  const Provider: React.FC<React.ProviderProps<T>> = ({ value, children }) => {
+    const hasParentProvider = React.useContext(HasParentProvider)
     const injectedVal = React.useContext(Context)
-    return (
-      <Context.Provider
-        value={injectedVal !== NOTHING ? injectedVal : value}
-        children={children}
-      ></Context.Provider>
+
+    const wrap = (elements: any) =>
+      hasParentProvider ? (
+        elements
+      ) : (
+          <HasParentProvider.Provider value={ true }>{ elements }</HasParentProvider.Provider>
+        )
+
+    return wrap(
+      <OriginalProvider value={ hasParentProvider ? injectedVal : value }>
+        { children }
+      </OriginalProvider>
     )
-  }
+  };
+
+  (Context as any).Provider = Provider
+
   return Context
 }
