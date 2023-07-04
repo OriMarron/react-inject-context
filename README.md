@@ -2,6 +2,7 @@
 The problem: 
 
 
+
 React context consumers receive the value from the nearest provider:
 ```JSX
  
