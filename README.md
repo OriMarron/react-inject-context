@@ -3,7 +3,7 @@ The problem:
 
 React context consumers receive the value from the nearest provider:
 ```JSX
-
+ 
 const Context = React.createContext(null)
 
 const Consumer = () => {
